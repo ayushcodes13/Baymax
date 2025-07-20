@@ -12,6 +12,4 @@ touch app.py
 touch requirements.txt
 touch research/trials.ipynb
 
-
-
 echo "Directory and files created successfully."
