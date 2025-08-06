@@ -206,3 +206,8 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+
+baymax_vectorstore/
+# Baymax Knowledge Base
+symptom_chunks.jsonl
