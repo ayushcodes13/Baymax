@@ -211,3 +211,7 @@ __marimo__/
 baymax_vectorstore/
 # Baymax Knowledge Base
 symptom_chunks.jsonl
+
+Baymax_KnowledgeBase/
+baymax_vectorstore/
+baymax_chunks.json
