@@ -215,3 +215,4 @@ symptom_chunks.jsonl
 Baymax_KnowledgeBase/
 baymax_vectorstore/
 baymax_chunks.json
+pdfs/
