@@ -12,10 +12,15 @@ __pycache__/
 
 # Virtual environments
 .venv/
+.venv-inference/
 venv/
 env/
 myenv/
 .venv
+.cache/
+.runtime/
+.tmp/
+artifacts/
 
 # Environment
 .env
