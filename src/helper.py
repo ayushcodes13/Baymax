@@ -27,7 +27,7 @@ def filter_to_minimal_docs(docs:List[Document]) -> List[Document]:
         minimal_docs.append(
             Document(
                 page_content=doc.page_content,
-                metadeta={"source": src,}
+                metadata={"source": src,}
             )
         )
     return minimal_docs
