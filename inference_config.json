@@ -1,0 +1,9 @@
+{
+  "model": {
+    "id": "ayoozzzz/baymax-llama-1b-finetuned",
+    "revision": "c5d094a61934a2c0726f228f316bff07cf204c52"
+  },
+  "cache_dir": "./.cache/huggingface",
+  "manifest_path": "./.cache/baymax-inference-smoke.json",
+  "max_new_tokens": 32
+}

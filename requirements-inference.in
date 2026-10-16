@@ -1,0 +1,7 @@
+# Pinned local MPS/CPU smoke runner for the published full Baymax model.
+torch==2.2.2
+transformers==4.52.4
+huggingface-hub==0.36.0
+tokenizers==0.21.1
+safetensors==0.5.3
+numpy==1.26.4

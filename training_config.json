@@ -1,0 +1,65 @@
+{
+  "base_model": {
+    "id": "unsloth/llama-3.2-1b-instruct-unsloth-bnb-4bit",
+    "revision": "8eb7999dc1d92775e7b5f75754a29c3fbdb32723",
+    "sequence_length": 2048,
+    "load_in_4bit": true
+  },
+  "dataset": {
+    "id": "mahfoos/Patient-Doctor-Conversation",
+    "revision": "d225c93b6430ec425f7264975ee23f44a94620fd",
+    "file": "pred_status.csv",
+    "expected_columns": [
+      "Description",
+      "Doctor",
+      "Patient",
+      "Status"
+    ],
+    "sample_count": 3300,
+    "shuffle_seed": 42,
+    "rights_review_required": true,
+    "schema_mapping_review_required": true,
+    "validation_fraction": 0.1,
+    "validation_split_seed": 2026
+  },
+  "lora": {
+    "rank": 16,
+    "alpha": 16,
+    "dropout": 0,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "seed": 3047
+  },
+  "training": {
+    "per_device_train_batch_size": 2,
+    "gradient_accumulation_steps": 8,
+    "epochs": 4,
+    "learning_rate": 0.0001,
+    "precision": "fp16",
+    "logging_steps": 50,
+    "save_steps": 500,
+    "save_total_limit": 3,
+    "output_dir": "./artifacts/baymax-lora/checkpoints",
+    "adapter_output_dir": "./artifacts/baymax-lora/adapter",
+    "merged_output_dir": "./artifacts/baymax-lora/merged",
+    "run_manifest_path": "./artifacts/baymax-lora/run_manifest.json",
+    "per_device_eval_batch_size": 2
+  },
+  "environment": {
+    "runtime": "CUDA-enabled GPU runtime with the Baymax checkout and Python environment on PEN DRIVE",
+    "cache_dir": "./.cache/huggingface",
+    "datasets_cache_dir": "./.cache/datasets",
+    "pip_cache_dir": "./.cache/pip",
+    "temporary_dir": "./.tmp",
+    "package_versions_pinned": false,
+    "held_out_evaluation_available": false,
+    "deterministic_validation_split_configured": true
+  }
+}
