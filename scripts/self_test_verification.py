@@ -221,6 +221,12 @@ class VerificationRegression(unittest.TestCase):
         self.refresh()
         self.fail_check("not zero")
 
+    def test_25_utc_z_suffix_works_on_python39(self):
+        self.manifest["recorded_at_utc"] = "2026-10-14T20:00:22Z"
+        self.exit_record["recorded_at_utc"] = "2026-10-14T20:00:23Z"
+        self.refresh()
+        self.pass_check()
+
 
 class WrapperRegression(unittest.TestCase):
     def setUp(self):
