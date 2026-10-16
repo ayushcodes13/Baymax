@@ -58,7 +58,8 @@ def read_small(path, limit, label):
 def utc_timestamp(value, label):
     require(isinstance(value, str), f"{label}: missing ISO UTC timestamp")
     try:
-        parsed = datetime.fromisoformat(value)
+        normalized = value[:-1] + "+00:00" if value.endswith("Z") else value
+        parsed = datetime.fromisoformat(normalized)
     except ValueError as exc:
         raise EvidenceError(f"{label}: invalid ISO timestamp") from exc
     require(parsed.tzinfo is not None and parsed.utcoffset() == timedelta(0),
