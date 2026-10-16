@@ -4,8 +4,11 @@ from __future__ import annotations
 import hashlib
 import importlib.metadata
 import json
+import os
 import platform
+import re
 import subprocess
+import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -61,6 +64,12 @@ text = tokenizer.decode(generated[0, inputs["input_ids"].shape[-1]:], skip_speci
 if not text:
     raise RuntimeError("The model loaded but generated no visible text.")
 
+# A wrapper-provided ID joins this generation to its log, exit record and manifest.
+# Direct invocations also get a new per-run manifest instead of overwriting older evidence.
+run_id = os.environ.get("BAYMAX_RUN_ID") or uuid.uuid4().hex
+if re.fullmatch(r"[0-9a-f]{32}", run_id) is None:
+    raise RuntimeError("Invalid BAYMAX_RUN_ID. Expected 32 lowercase hexadecimal characters.")
+
 try:
     source_commit = subprocess.check_output(
         ["git", "rev-parse", "HEAD"], cwd=REPO_ROOT, text=True, stderr=subprocess.DEVNULL
@@ -73,6 +82,7 @@ def sha256(path: Path) -> str:
 
 manifest = {
     "status": "completed",
+    "run_id": run_id,
     "recorded_at_utc": datetime.now(timezone.utc).isoformat(),
     "source_commit": source_commit,
     "model_id": model_id,
@@ -95,7 +105,32 @@ manifest = {
     "output_character_count": len(text),
     "note": "Load/generation smoke only; this result is not a model quality, safety, or medical evaluation.",
 }
-manifest_path = REPO_ROOT / config["manifest_path"]
+manifest_path = REPO_ROOT / ".tmp" / f"offline-inference-{run_id}.manifest.json"
 manifest_path.parent.mkdir(parents=True, exist_ok=True)
-manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
-print(json.dumps({"status": "completed", "device": device, "model_id": model_id, "model_revision": revision, "generated_text": text}, indent=2))
+manifest_bytes = (json.dumps(manifest, indent=2) + "\n").encode("utf-8")
+temp_manifest = manifest_path.with_name(manifest_path.name + "." + uuid.uuid4().hex + ".tmp")
+try:
+    if manifest_path.exists():
+        raise FileExistsError(f"Run manifest already exists: {manifest_path}")
+    with temp_manifest.open("xb") as handle:
+        handle.write(manifest_bytes)
+        handle.flush()
+        os.fsync(handle.fileno())
+    os.replace(temp_manifest, manifest_path)
+finally:
+    temp_manifest.unlink(missing_ok=True)
+
+# A single marked, final JSON line prevents unrelated framework messages from
+# being mistaken for the generation result.
+result = {
+    "frame_version": 1,
+    "run_id": run_id,
+    "status": "completed",
+    "recorded_at_utc": manifest["recorded_at_utc"],
+    "device": device,
+    "model_id": model_id,
+    "model_revision": revision,
+    "generated_text": text,
+    "manifest_sha256": hashlib.sha256(manifest_bytes).hexdigest(),
+}
+print("BAYMAX_RESULT_V1=" + json.dumps(result, separators=(",", ":")), flush=True)
