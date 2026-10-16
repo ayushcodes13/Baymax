@@ -99,20 +99,89 @@ and will be cached under `.cache/huggingface` on the PEN DRIVE. The Python
 3.9 environment, package cache, model cache, and smoke manifest are also kept
 under this checkout. A small helper removes AppleDouble `._*` files that
 macOS writes into the PEN DRIVE's FAT filesystem and that Python may misread
-as `.pth` files.
+as `.pth` files. Keep all installation temporary files on the drive:
 
 ```bash
+mkdir -p .tmp .cache/pip .cache/huggingface .cache/xdg
+export TMPDIR="$PWD/.tmp/"
+export PIP_CACHE_DIR="$PWD/.cache/pip"
+export HF_HOME="$PWD/.cache/huggingface"
+export XDG_CACHE_HOME="$PWD/.cache/xdg"
 /usr/bin/python3 -m venv .venv-inference
 /usr/bin/python3 scripts/clean_pendrive_metadata.py
-PIP_CACHE_DIR="$PWD/.cache/pip" .venv-inference/bin/python -m pip install --require-hashes -r requirements-inference.lock
+.venv-inference/bin/python -m pip install --require-hashes -r requirements-inference.lock
 /usr/bin/python3 scripts/clean_pendrive_metadata.py
-.venv-inference/bin/python scripts/inference_smoke.py
 ```
 
 The script uses the pinned `ayoozzzz/baymax-llama-1b-finetuned` revision in
-[`inference_config.json`](./inference_config.json), needs no Hugging Face token,
-and writes a local manifest with version and hash metadata, but no prompt or
-model output, to `.cache/baymax-inference-smoke.json`.
+[`inference_config.json`](./inference_config.json) and needs no Hugging Face token.
+Each new inference writes a unique `.tmp/offline-inference-<32-hex-run-ID>.manifest.json`
+with version and source hashes, but without the generated prompt or output.
+Use the wrapper below to capture the matching log and exit record. Directly
+running `scripts/inference_smoke.py` generates a manifest but no paired
+log/exit evidence, so it cannot independently pass the recorded-run verifier.
+
+**No-download verifier self-test (checkout containing these scripts):** This
+uses only the Python standard library and fake source/log/manifest fixtures.
+The verification scripts are currently uncommitted local work; a fresh clone
+from GitHub will not contain this self-test until those changes are reviewed
+and published separately. Once present in a checkout on the PEN DRIVE, run it
+before installing packages or downloading model weights:
+
+```bash
+mkdir -p .tmp
+export TMPDIR="$PWD/.tmp/"
+export PYTHONDONTWRITEBYTECODE=1
+/usr/bin/python3 -B scripts/self_test_verification.py
+```
+
+A self-test PASS means the verifier and wrapper reject synthetic failure cases;
+it **does not** run Baymax, validate weights, reproduce a historical inference,
+or establish medical safety. The self-test cleans up its temporary fixture
+directories under `.tmp`. It requires no `.venv-inference`, `.cache`,
+network connection, or model weights.
+
+For an **actual offline model-generation check**, after the pinned dependencies
+and model files have been cached on the PEN DRIVE, run from this repository.
+This executes the model locally; it is not part of the source-only self-test:
+
+```bash
+bash scripts/run_offline_inference.sh
+# Set this to the run ID in the wrapper's printed .tmp/offline-inference-<run-ID>.log path:
+run_id="<run-ID-from-wrapper>"
+.venv-inference/bin/python scripts/verify_inference_manifest.py \
+  --run-log ".tmp/offline-inference-${run_id}.log" \
+  --exit-status ".tmp/offline-inference-${run_id}.exit"
+```
+
+The wrapper disables Hugging Face downloads, points temporary and package
+caches at this checkout, and creates a unique `.log`, `.exit` JSON, and
+`.manifest.json` for each invocation. The manifest and final marked result
+frame contain the same random run ID. The verifier requires the log and exit
+record with matching filenames and IDs, then checks the matching manifest's
+SHA-256, zero exit status, pinned model revision, nonempty generated output,
+and current source file hashes. It rejects stale manifests even when two
+runs generate identical text. The wrapper exits with an error if the log,
+manifest, or exit evidence cannot be written. The ignored local log contains the
+fictional generated greeting; avoid using private prompts or sharing logs.
+If a run is interrupted, inspect the log, exit record and manifest
+timestamp before starting it again; corroborating a previous successful run
+does not establish that a later run succeeded. Always select the matching
+records from the run being assessed. The offline wrapper requires a populated
+local cache. The manifest verifier checks recorded run evidence; it does not
+assess the semantic correctness, clinical safety, or quality of the generated
+reply. MPS first-load latency can be substantial on macOS.
+
+**Historical evidence (14 October 2026):** The previous macOS MPS run completed
+with exit status `0` and a nonempty synthetic response. Its original
+`.tmp/offline-inference-20261014T195801Z-30820.log`,
+`.tmp/offline-inference-20261014T195801Z-30820.exit`, and
+`.cache/baymax-inference-smoke.json` remain unchanged on this PEN DRIVE.
+They use the earlier singleton-manifest/JSON format and its older
+`scripts/inference_smoke.py` source hash. The stricter new verifier deliberately
+does not report a current-run PASS for those legacy records. Their original
+successful smoke result is historical evidence only and does not prove a new
+run, weight integrity, fine-tuning reproducibility, or clinical competence.
 
 ## Separate legacy experiment: retrieval web app
 
