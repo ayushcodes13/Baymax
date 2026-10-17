@@ -9,7 +9,7 @@
 <p align="center">
   <a href="https://github.com/ayushcodes13/Baymax"><img alt="GitHub repository" src="https://img.shields.io/badge/GitHub-Baymax-29624e?logo=github"></a>
   <a href="https://github.com/ayushcodes13/Baymax/actions/workflows/verification.yml"><img alt="Source-only verification" src="https://github.com/ayushcodes13/Baymax/actions/workflows/verification.yml/badge.svg?branch=main"></a>
-  <a href="https://project-e6c8g.vercel.app/"><img alt="Vercel production project page" src="https://img.shields.io/badge/Vercel-Production-black?logo=vercel"></a>
+  <a href="https://baymax.devayushrout.me/"><img alt="Vercel production project page" src="https://img.shields.io/badge/Vercel-Production-black?logo=vercel"></a>
   <a href="./LICENSE"><img alt="Apache 2.0 license" src="https://img.shields.io/badge/license-Apache--2.0-blue.svg"></a>
   <img alt="Python 3.9 inference environment" src="https://img.shields.io/badge/inference-Python%203.9-3776AB?logo=python&logoColor=white">
   <img alt="Experimental project; not a medical product" src="https://img.shields.io/badge/status-experimental-c16e42">
@@ -21,7 +21,7 @@
 
 > **Not for medical use.** This experimental model may generate inaccurate, unsafe, or unsupported health claims. It does not diagnose, treat, or replace a qualified health professional.
 
-**Production project page:** [Open the Baymax showcase](https://project-e6c8g.vercel.app/). Vercel serves the static `web/` project overview, workflow, and boundaries pages; it does not host or run the fine-tuned model. The deployment was promoted from commit `bdcb20a`, whose source tree matched `main` at `2babe72` (`70ecf7b`) at the time of promotion.
+**Production project page:** [Open the Baymax showcase](https://baymax.devayushrout.me/) ([Vercel fallback](https://project-e6c8g.vercel.app/)). Vercel serves the static `web/` project overview, workflow, and boundaries pages; it does not host or run the fine-tuned model.
 
 Baymax is a fine-tuning project for a Llama 3.2 1B model using 4-bit loading
 and LoRA. The training workflow is recorded in
