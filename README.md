@@ -1,4 +1,23 @@
-# Baymax
+<p align="center">
+  <img src="./web/assets/baymax-mark.svg" width="74" height="74" alt="Baymax project mark">
+</p>
+
+<h1 align="center">Baymax — Llama 3.2 Fine-Tuning Experiment</h1>
+
+<p align="center"><strong>An experimental LoRA project with a verifiable local inference record and clear limits.</strong></p>
+
+<p align="center">
+  <a href="https://github.com/ayushcodes13/Baymax"><img alt="GitHub repository" src="https://img.shields.io/badge/GitHub-Baymax-29624e?logo=github"></a>
+  <a href="./LICENSE"><img alt="Apache 2.0 license" src="https://img.shields.io/badge/license-Apache--2.0-blue.svg"></a>
+  <img alt="Python 3.9 inference environment" src="https://img.shields.io/badge/inference-Python%203.9-3776AB?logo=python&logoColor=white">
+  <img alt="Experimental project; not a medical product" src="https://img.shields.io/badge/status-experimental-c16e42">
+</p>
+
+<p align="center">
+  <img src="./screenshots/baymax-page-desktop-hero.png" alt="Baymax project page showing its model overview and evidence status" width="100%">
+</p>
+
+> **Not for medical use.** This experimental model may generate inaccurate, unsafe, or unsupported health claims. It does not diagnose, treat, or replace a qualified health professional.
 
 Baymax is a fine-tuning project for a Llama 3.2 1B model using 4-bit loading
 and LoRA. The training workflow is recorded in
@@ -121,12 +140,9 @@ Use the wrapper below to capture the matching log and exit record. Directly
 running `scripts/inference_smoke.py` generates a manifest but no paired
 log/exit evidence, so it cannot independently pass the recorded-run verifier.
 
-**No-download verifier self-test (checkout containing these scripts):** This
-uses only the Python standard library and fake source/log/manifest fixtures.
-The verification scripts are currently uncommitted local work; a fresh clone
-from GitHub will not contain this self-test until those changes are reviewed
-and published separately. Once present in a checkout on the PEN DRIVE, run it
-before installing packages or downloading model weights:
+**No-download verifier self-test:** The verifier and its synthetic-fixture
+self-test are tracked in this repository. From a fresh clone on the PEN DRIVE,
+run the self-test before installing packages or downloading model weights:
 
 ```bash
 mkdir -p .tmp
@@ -172,16 +188,16 @@ local cache. The manifest verifier checks recorded run evidence; it does not
 assess the semantic correctness, clinical safety, or quality of the generated
 reply. MPS first-load latency can be substantial on macOS.
 
-**Historical evidence (14 October 2026):** The previous macOS MPS run completed
-with exit status `0` and a nonempty synthetic response. Its original
-`.tmp/offline-inference-20261014T195801Z-30820.log`,
-`.tmp/offline-inference-20261014T195801Z-30820.exit`, and
-`.cache/baymax-inference-smoke.json` remain unchanged on this PEN DRIVE.
-They use the earlier singleton-manifest/JSON format and its older
-`scripts/inference_smoke.py` source hash. The stricter new verifier deliberately
-does not report a current-run PASS for those legacy records. Their original
-successful smoke result is historical evidence only and does not prove a new
-run, weight integrity, fine-tuning reproducibility, or clinical competence.
+**Recorded local smoke evidence (16 October 2026):** On macOS MPS, the pinned
+public model generated text and the current manifest verifier accepted the
+matching log, exit record, and manifest. The run artifacts are local ignored
+files and are not part of a fresh clone. The response included the unsupported
+claim that Baymax was “a great tool for monitoring your health and well being.”
+This is a concrete safety failure. The verifier confirms that the recorded
+files match the run protocol; it does not validate the output. Do not present
+this smoke run as evidence of health monitoring capability, medical accuracy,
+safety, or clinical competence. A separate older 14 October run uses the
+legacy evidence format and is not accepted by the current verifier.
 
 ## Separate legacy experiment: retrieval web app
 
