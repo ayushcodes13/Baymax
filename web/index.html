@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f1eb">
+  <meta name="description" content="Baymax is an experimental fine-tuning project for a Llama 3.2 1B model. Explore its recorded setup, local inference path, and limitations.">
+  <title>Baymax — an experimental fine-tuning project</title>
+  <link rel="icon" href="/assets/baymax-mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Baymax home"><img src="/assets/baymax-mark.svg" alt=""><span>Baymax</span></a>
+    <nav aria-label="Main navigation"><a href="#project">Project</a><a href="#workflow">Workflow</a><a href="#boundaries">Boundaries</a><a class="nav-cta" href="https://github.com/ayushcodes13/Baymax">View repository <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="pulse"></span> EXPERIMENTAL MODEL PROJECT</p>
+        <h1 id="hero-title">A small model.<br><em>A careful record.</em></h1>
+        <p class="lede">Baymax explores LoRA fine-tuning for a Llama 3.2 1B model. This project page makes the setup, a local smoke run, and the important gaps easy to inspect.</p>
+        <div class="hero-actions"><a class="button primary" href="#workflow">Explore the workflow <span aria-hidden="true">↓</span></a><a class="text-link" href="https://github.com/ayushcodes13/Baymax/blob/main/README.md">Read the full README <span aria-hidden="true">↗</span></a></div>
+        <div class="hero-meta"><span><b>01B</b> base model size</span><span><b>LoRA</b> adaptation method</span><span><b>Local</b> inference path</span></div>
+      </div>
+      <div class="hero-art" aria-label="Abstract illustration of a model card and evidence trail">
+        <div class="art-glow"></div><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="model-card"><div class="card-head"><img src="/assets/baymax-mark.svg" alt=""><span>MODEL NOTE · 001</span><i></i></div><div class="card-title">Llama 3.2 <strong>1B</strong></div><div class="card-sub">instruction-tuned · 4-bit base</div><div class="card-line"><span>ADAPTATION</span><b>LoRA</b></div><div class="card-line"><span>INFERENCE</span><b>Local · MPS smoke</b></div><div class="card-line"><span>QUALITY REVIEW</span><b class="pending">Not established</b></div><div class="card-foot"><span>Evidence first</span><span>↗</span></div></div>
+        <div class="floating-chip chip-a"><span class="chip-dot"></span> weights pinned</div><div class="floating-chip chip-b"><span class="chip-dot warn"></span> data review open</div>
+        <div class="art-caption">A project record, not a clinical product.</div>
+      </div>
+    </section>
+    <section id="project" class="section intro-grid">
+      <div><p class="eyebrow">01 / THE PROJECT</p><h2>What Baymax is<br><em>being built to explore.</em></h2></div>
+      <div class="intro-body"><p>Baymax is a fine-tuning experiment built around a 1-billion-parameter Llama 3.2 base model. The repository records a 4-bit base, LoRA settings, a pinned dataset revision, and an offline inference path.</p><p>The training data’s usage rights and the proposed input-to-target mapping still need review. Training is gated until both are resolved. A recorded greeting smoke run proves a model generated text on this machine; it does not show that the output is correct or safe.</p><a class="text-link" href="https://github.com/ayushcodes13/Baymax/blob/main/training_config.json">Inspect the training configuration <span aria-hidden="true">↗</span></a></div>
+    </section>
+    <section id="workflow" class="section workflow-section">
+      <div class="section-heading"><div><p class="eyebrow">02 / THE WORKFLOW</p><h2>From configuration<br><em>to a checkable run.</em></h2></div><p class="section-note">The fine-tuned model is not deployed on Vercel. This static page is a project overview; inference remains local and requires the pinned model files.</p></div>
+      <div class="steps"><article class="step"><span class="step-no">01</span><div class="step-icon">⌘</div><h3>Review the recipe</h3><p>Inspect pinned model and dataset revisions, LoRA parameters, and the two unresolved data gates.</p><a href="https://github.com/ayushcodes13/Baymax/blob/main/training_config.json">training_config.json ↗</a></article><article class="step"><span class="step-no">02</span><div class="step-icon">◌</div><h3>Run locally</h3><p>Prepare a Python 3.9 environment and model cache on the PEN DRIVE, then run the offline smoke wrapper.</p><a href="https://github.com/ayushcodes13/Baymax/blob/main/README.md#local-inference-smoke-for-the-published-full-model">inference instructions ↗</a></article><article class="step"><span class="step-no">03</span><div class="step-icon">✓</div><h3>Verify the record</h3><p>A standard-library verifier checks a run’s matching log, exit record, manifest, and current source hashes.</p><a href="https://github.com/ayushcodes13/Baymax/blob/main/scripts/verify_inference_manifest.py">verification code ↗</a></article></div>
+      <div class="run-note"><div class="run-badge">RUN<br>RECORDED</div><div><p class="eyebrow">RECORDED SMOKE CHECK · MACOS MPS</p><h3>Text generation completed; output review did not.</h3><p>A fictional greeting produced an unsolicited claim that Baymax was “a great tool for monitoring your health and well being.” That unsupported health capability claim is a concrete safety failure. The smoke run is evidence of execution only, not evidence of quality, safety, or clinical suitability.</p></div></div>
+    </section>
+    <section id="boundaries" class="section boundary-section">
+      <div class="boundary-heading"><p class="eyebrow">03 / CLEAR BOUNDARIES</p><h2>Useful evidence.<br><em>Honest limits.</em></h2></div>
+      <div class="boundary-grid"><article><span class="boundary-symbol">01</span><h3>Not a medical tool</h3><p>Baymax does not diagnose, treat, or replace a qualified health professional. Its output may be wrong, unsafe, or outdated.</p></article><article><span class="boundary-symbol">02</span><h3>Training is gated</h3><p>Dataset rights and the proposed schema mapping need review. Public availability does not establish permission to train.</p></article><article><span class="boundary-symbol">03</span><h3>Separate experiments</h3><p>The repository’s Flask, Pinecone, and Groq RAG demo is a distinct legacy experiment. It does not serve the fine-tuned model.</p></article><article><span class="boundary-symbol">04</span><h3>No clinical evaluation</h3><p>There is no independently reviewed held-out evaluation set, verified reproducible training runtime, or clinical validation.</p></article></div>
+    </section>
+    <section class="closing"><div><p class="eyebrow">EXPLORE THE SOURCE</p><h2>Follow the evidence<br><em>back to the repo.</em></h2></div><a class="button light" href="https://github.com/ayushcodes13/Baymax">Open Baymax on GitHub <span aria-hidden="true">↗</span></a></section>
+  </main>
+  <footer><a class="brand" href="#top"><img src="/assets/baymax-mark.svg" alt=""><span>Baymax</span></a><p>Experimental fine-tuning project · Not for medical use</p><a href="https://github.com/ayushcodes13/Baymax">Source on GitHub ↗</a></footer>
+</body>
+</html>
