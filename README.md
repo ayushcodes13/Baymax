@@ -8,6 +8,7 @@
 
 <p align="center">
   <a href="https://github.com/ayushcodes13/Baymax"><img alt="GitHub repository" src="https://img.shields.io/badge/GitHub-Baymax-29624e?logo=github"></a>
+  <a href="https://github.com/ayushcodes13/Baymax/actions/workflows/verification.yml"><img alt="Source-only verification" src="https://github.com/ayushcodes13/Baymax/actions/workflows/verification.yml/badge.svg?branch=main"></a>
   <a href="https://baymax-web-git-baymax-vercel-preview-devayush-personal.vercel.app/"><img alt="Vercel preview" src="https://img.shields.io/badge/Vercel-Preview-black?logo=vercel"></a>
   <a href="./LICENSE"><img alt="Apache 2.0 license" src="https://img.shields.io/badge/license-Apache--2.0-blue.svg"></a>
   <img alt="Python 3.9 inference environment" src="https://img.shields.io/badge/inference-Python%203.9-3776AB?logo=python&logoColor=white">
