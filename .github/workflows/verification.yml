@@ -1,0 +1,26 @@
+name: Source-only verification
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verifier-self-test:
+    name: Verifier regression suite (synthetic fixtures only)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+      - name: Compile source-only verification scripts
+        run: python -m py_compile scripts/verify_inference_manifest.py scripts/self_test_verification.py
+      - name: Run synthetic verifier and wrapper regressions
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -B scripts/self_test_verification.py

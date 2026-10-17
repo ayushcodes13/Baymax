@@ -24,9 +24,10 @@ from verify_inference_manifest import EvidenceError, verify_recorded_run, RESULT
 CHECKOUT = Path(__file__).resolve().parent.parent
 TEMP_ROOT = CHECKOUT / ".tmp"
 TEMP_ROOT.mkdir(parents=True, exist_ok=True)
-assert TEMP_ROOT.resolve().is_relative_to(Path("/Volumes/PEN DRIVE").resolve()), (
-    "The self-test must run from a checkout on PEN DRIVE."
-)
+if os.environ.get("GITHUB_ACTIONS") != "true":
+    assert TEMP_ROOT.resolve().is_relative_to(Path("/Volumes/PEN DRIVE").resolve()), (
+        "The self-test must run from a checkout on PEN DRIVE."
+    )
 
 
 def write_json(path, value):
